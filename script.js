@@ -96,11 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // If valid, submit to WhatsApp
       if (!hasErrors) {
-        submitBtn.disabled = true;
-        spinner.style.display = 'inline-block';
-        const originalText = submitBtn.querySelector('.btn-text').textContent;
-        submitBtn.querySelector('.btn-text').textContent = 'Connecting to operator…';
-
         // Build WhatsApp Message
         const baseMessage = `Hello PORTAL HVACR, I need service assistance.\n\n` +
                             `• Name: ${name}\n` +
@@ -111,16 +106,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const encodedMessage = encodeURIComponent(baseMessage);
         const waUrl = `https://wa.me/19297216363?text=${encodedMessage}`;
 
-        // Simulate operator delay then redirect
-        setTimeout(() => {
-          window.open(waUrl, '_blank', 'noopener');
-          
-          // Reset button state
-          submitBtn.disabled = false;
-          spinner.style.display = 'none';
-          submitBtn.querySelector('.btn-text').textContent = originalText;
-          bookingForm.reset();
-        }, 1200);
+        // Redirect immediately using location.href to bypass mobile pop-up blockers
+        window.location.href = waUrl;
+        
+        // Reset form fields
+        bookingForm.reset();
       } else {
         // Focus first error input
         const firstErrorInput = document.querySelector('.input-error');
